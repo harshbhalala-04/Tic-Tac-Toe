@@ -72,22 +72,15 @@ public class Main {
     public static String winningCondition(char[][] ticTacToeBoard, ArrayList<Integer> player1Positions, ArrayList<Integer> player2Positions) {
 
         List<List> winningMovesList = new ArrayList<>();
-        List firstRow = Arrays.asList(1, 2, 3);
-        List secondRow = Arrays.asList(4, 5, 6);
-        List thirdRow = Arrays.asList(7, 8, 9);
-        List firstCol = Arrays.asList(1, 4, 7);
-        List secondCol = Arrays.asList(2, 5, 8);
-        List thirdCol = Arrays.asList(3, 6, 9);
-        List firstDiagonal = Arrays.asList(1, 5, 9);
-        List secondDiagonal = Arrays.asList(3, 5, 7);
-        winningMovesList.add(firstRow);
-        winningMovesList.add(secondRow);
-        winningMovesList.add(thirdRow);
-        winningMovesList.add(firstCol);
-        winningMovesList.add(secondCol);
-        winningMovesList.add(thirdCol);
-        winningMovesList.add(firstDiagonal);
-        winningMovesList.add(secondDiagonal);
+        
+        winningMovesList.add(Arrays.asList(1, 2, 3));
+        winningMovesList.add(Arrays.asList(4, 5, 6));
+        winningMovesList.add(Arrays.asList(7, 8, 9));
+        winningMovesList.add(Arrays.asList(1, 4, 7));
+        winningMovesList.add(Arrays.asList(2, 5, 8));
+        winningMovesList.add(Arrays.asList(3, 6, 9));
+        winningMovesList.add(Arrays.asList(1, 5, 9));
+        winningMovesList.add(Arrays.asList(3, 5, 7));
 
         for(List singleMoveList: winningMovesList) {
             if(player1Positions.containsAll(singleMoveList)) {
