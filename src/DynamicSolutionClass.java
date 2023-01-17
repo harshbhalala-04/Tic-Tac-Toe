@@ -5,57 +5,29 @@ import java.util.Scanner;
 
 public class DynamicSolutionClass {
     List<List<String>> dynamicTicTacToeBoard = new ArrayList<>();
+    ArrayList<Integer> player1Positions = new ArrayList<>();
+    ArrayList<Integer> player2Positions = new ArrayList<>();
+    int boardDimensions;
+    enum Player {
+        PLAYER1,
+        PLAYER2
+    }
 
     public void startTicTacToe() {
 
-        ArrayList<Integer> player1Positions = new ArrayList<>();
-        ArrayList<Integer> player2Positions = new ArrayList<>();
-
         System.out.println("Enter in which board do you want to play : (Ex. 3 X 3, 4 X 4)");
-        int boardDimensions = new Scanner(System.in).nextInt();
-
+        boardDimensions = new Scanner(System.in).nextInt();
+        int singleUserGame;
         createBoard(boardDimensions);
 
         while (true) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter place where you want to put your sign(Player 1): ");
 
-            int player1Pos = scanner.nextInt();
-
-            //Validate player 1 input
-            while (player1Positions.contains(player1Pos) || player2Positions.contains(player1Pos)) {
-                System.out.println("Please select valid position: ");
-                player1Pos = scanner.nextInt();
-            }
-            player1Positions.add(player1Pos);
-
-            putSign(boardDimensions, player1Pos, "player 1");
-
-            displayTicTacToeBoard();
-            String res = winningCondition(boardDimensions, player1Positions, player2Positions);
-            if (res != "") {
-                System.out.println(res);
+            singleUserGame = playGameForSingleUser(Player.PLAYER1);
+            if(singleUserGame == 1) {
                 return;
             }
-
-            System.out.println("Enter place where you want to put your sign(Player 2): ");
-            int player2Pos = scanner.nextInt();
-
-            //Validate player 2 input
-            while (player1Positions.contains(player2Pos) || player2Positions.contains(player2Pos)) {
-                System.out.println("Please select valid position: ");
-                player2Pos = scanner.nextInt();
-            }
-
-            player2Positions.add(player2Pos);
-
-            putSign(boardDimensions, player2Pos, "player 2");
-
-            displayTicTacToeBoard();
-
-            res = winningCondition(boardDimensions, player1Positions, player2Positions);
-            if (res != "") {
-                System.out.println(res);
+            singleUserGame = playGameForSingleUser(Player.PLAYER2);
+            if(singleUserGame == 1) {
                 return;
             }
         }
@@ -71,11 +43,41 @@ public class DynamicSolutionClass {
         }
     }
 
-    public void putSign(int boardDimensions, int pos, String user) {
+
+    public int pickInput() {
+        Scanner scanner = new Scanner(System.in);
+        int playerPos = scanner.nextInt();
+        while (player1Positions.contains(playerPos) || player2Positions.contains(playerPos)) {
+            System.out.println("Please select valid position: ");
+            playerPos = scanner.nextInt();
+        }
+        return playerPos;
+    }
+
+    public int playGameForSingleUser(Player user) {
+        System.out.println("Enter place where you want to put your sign(Player 1): ");
+        int playerPos = pickInput();
+        if(user == Player.PLAYER1) {
+            player1Positions.add(playerPos);
+        } else if(user == Player.PLAYER2) {
+            player2Positions.add(playerPos);
+        }
+
+        putSign(playerPos, user);
+        displayTicTacToeBoard();
+        String res = winningCondition();
+        if (res != null) {
+            System.out.println(res);
+            return 1;
+        }
+        return 0;
+    }
+
+    public void putSign( int pos,Player user) {
 
         String sign = " ";
 
-        if(user.equals("player 1")) {
+        if(user == Player.PLAYER1) {
             sign = "X";
         } else {
             sign = "O";
@@ -95,7 +97,7 @@ public class DynamicSolutionClass {
         }
     }
 
-    public String winningCondition(int boardDimensions, ArrayList<Integer> player1Positions, ArrayList<Integer> player2Positions) {
+    public String winningCondition() {
 
         List<List> winningMovesList = new ArrayList<>();
 
@@ -135,7 +137,7 @@ public class DynamicSolutionClass {
         }
 
         winningMovesList.add(rightDiagonal);
-        
+
 
         for(List singleMoveList: winningMovesList) {
             if(player1Positions.containsAll(singleMoveList)) {
@@ -146,6 +148,6 @@ public class DynamicSolutionClass {
                 return "Game draw";
             }
         }
-        return "";
+        return null;
     }
 }
